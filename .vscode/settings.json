@@ -1,0 +1,10 @@
+{
+	"json.schemas": [
+		{
+			"fileMatch": [
+				"renv.lock"
+			],
+			"url": "https://raw.githubusercontent.com/rstudio/renv/refs/tags/v1.2.3/inst/schema/draft-07.renv.lock.schema.json"
+		}
+	]
+}

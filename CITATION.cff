@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/citation-file-format/citation-file-format/refs/tags/1.2.0/schema.json
+cff-version: 1.2.0
+title: "Source code - Compatibility of Cyclobutrifluram with arbuscular mycorrhiza and soil microbiomes"
+message: "If you use this software, please cite the assoicated publication."
+type: software
+authors:
+  - given-names: Thom
+    family-names: Griffioen
+    affiliation: "Syngenta Crop Protection AG"
+    orcid: "https://orcid.org/0000-0003-0504-6633"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Compatibility of Cyclobutrifluram with arbuscular mycorrhiza and soil microbiomes"
+  authors:
+    - given-names: Ben
+      family-names: Oyserman
+      email: Ben.Oyserman@syngenta.com
+      affiliation: "Syngenta Crop Protection AG"
+      orcid: "https://orcid.org/0000-0001-9052-2651"
+    - given-names: Alice
+      family-names: Giletta
+      affiliation: "Syngenta Crop Protection AG"
+    - given-names: Thom
+      family-names: Griffioen
+      affiliation: "Syngenta Crop Protection AG"
+      orcid: "https://orcid.org/0000-0003-0504-6633"
+    - given-names: Tobias
+      family-names: Plec
+      affiliation: "Syngenta Crop Protection AG"
+    - given-names: Matthias
+      family-names: Gaberthueel
+      affiliation: "Syngenta Crop Protection AG"
+    - given-names: Marta
+      family-names: Ridolfi
+      affiliation: "Syngenta Crop Protection AG"
+    - given-names: Dimitrios
+      family-names: Drakopoulos
+      affiliation: "Syngenta Crop Protection AG"
+    - given-names: Stefano
+      family-names: Rendine
+      affiliation: "Syngenta Crop Protection AG"
+    - given-names: Claudio
+      family-names: Screpanti
+      affiliation: "Syngenta Crop Protection AG"
+  doi: "10.21203/rs.3.rs-9852577/v1"
+  journal: "Research Square"
+  month: 6
+  year: 2026
