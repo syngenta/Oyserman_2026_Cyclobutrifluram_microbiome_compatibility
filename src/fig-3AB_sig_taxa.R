@@ -14,10 +14,8 @@ sig_taxa <- load_sig_taxa("16S")
 
 
 # LFC sign plot -------------------------------------------------------------------------------
-alpha <- 0.05
-
 p_pos_v_neg <- sig_taxa$df |>
-	filter(padj <= alpha) |>
+	filter(padj <= ALPHA_CUTOFF) |>
 	summarise(observations = n(), .by = c(increase_abun)) |>
 	mutate(proportion = observations / nrow(sig_taxa$df)) |>
 	ggplot(aes(x = increase_abun, fill = increase_abun)) +
@@ -34,7 +32,7 @@ p_pos_v_neg <- sig_taxa$df |>
 	scale_y_continuous(expand = c(0,0,0.05,0), labels = scales::label_percent()) +
 	labs(
 		title = latex2exp::TeX(sprintf(r"(%s: Proportion of $\sgn(\log_2 FC)$)", sig_taxa$target)),
-		subtitle = latex2exp::TeX(r"(Significance threshold: $p_{adj} \leq 0.05$)"),
+		subtitle = latex2exp::TeX(sprintf(r"(Significance threshold: $p_{adj} \leq %s$)", ALPHA_CUTOFF)),
 		x = NULL,
 		y = "Proportion of total observed"
 	) +

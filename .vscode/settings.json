@@ -4,7 +4,7 @@
 			"fileMatch": [
 				"renv.lock"
 			],
-			"url": "https://raw.githubusercontent.com/rstudio/renv/refs/tags/v1.2.3/inst/schema/draft-07.renv.lock.schema.json"
+			"url": "https://raw.githubusercontent.com/rstudio/renv/refs/tags/v1.3.1/inst/schema/draft-07.renv.lock.schema.json"
 		}
 	]
 }

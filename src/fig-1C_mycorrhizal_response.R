@@ -10,6 +10,18 @@ suppressPackageStartupMessages({
 source("./src/init.R", echo = FALSE, local = TRUE)
 
 
+# ANOVA stats ---------------------------------------------------------------------------------
+summary(aov(
+	DSW ~ amf_pretty * cyc_pretty,
+	data = filter(mycorrhizal_response_df, experiment == "A")
+))
+
+summary(aov(
+	DSW ~ amf_pretty * cyc_pretty,
+	data = filter(mycorrhizal_response_df, experiment == "B")
+))
+
+
 # plot DSW vs treatment -----------------------------------------------------------------------
 
 print(shapiro.test(mycorrhizal_response_df$DSW))
@@ -52,8 +64,8 @@ mycorrhizal_response_df |>
 	) +
 	labs(
 		x = NULL,
-		y = "Dry shoot weight",
-		fill = "Cyclobutrifluram"
+		y = "Shoot dry weight (SDW)",
+		fill = "cyclobutrifluram"
 	)
 
 

@@ -7,7 +7,24 @@ suppressPackageStartupMessages({
 
 source("./src/init.R", echo = FALSE, local = TRUE)
 
+ALPHA_CUTOFF <- 0.05
 
+
+# stats ---------------------------------------------------------------------------------------
+fungicidal_activity_stats_df <- fungicidal_activity_df |>
+	group_by(organism) |>
+	rstatix::t_test(
+		formula = diameter_mm ~ compound,
+		paired = FALSE,
+		alternative = "two.sided",
+		var.equal = TRUE
+	) |>
+	rstatix::add_significance("p") |>
+	rstatix::adjust_pvalue(method = "bonferroni") |>
+	rstatix::add_significance("p.adj")
+
+
+# barplot -------------------------------------------------------------------------------------
 p_fa <- fungicidal_activity_df |>
 	mutate(cyc = compound == "Cyclobutrifluram") |>
 	ggplot(aes(x = organism, y = diameter_mm, fill = cyc)) +
@@ -28,17 +45,17 @@ p_fa <- fungicidal_activity_df |>
 	stat_pwc(
 		method = "t_test",
 		method.args = list(paired = FALSE, alternative = "two.sided", var.equal = TRUE),
-		label = "p={p.format}",
-		hide.ns = TRUE,
+		label = sprintf(
+			"{ifelse(p.adj >= %f, 'ns', paste0('italic(P)=', p.adj.format))}",
+			ALPHA_CUTOFF
+		),
+		p.format.style = "nejm",
 		remove.bracket = TRUE,
-		p.adjust.method = "none",
+		p.adjust.method = "bonferroni",
+		p.min.threshold = 0.001,
 		y.position = 75,
-		# hjust = 0,
-		# vjust = 0.5,
 		label.size = gg_pt2mm(6),  # in mm
-		# angle = -90
-	) +
-	# facet_grid(cols = vars(species)) +
+  ) +
 	mytheme(brewer_pal = NULL, legend_pos = "bottom") +
 	theme(
 		panel.spacing = unit(2, "mm"),

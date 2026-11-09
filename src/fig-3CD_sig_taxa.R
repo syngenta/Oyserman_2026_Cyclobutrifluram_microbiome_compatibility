@@ -14,11 +14,8 @@ sig_taxa <- load_sig_taxa("16S")
 
 
 # clade prevalence plot -----------------------------------------------------------------------
-alpha <- 0.05
-
-
 p_sig_clade <- sig_taxa$df |>
-	mutate(is_signif = padj <= alpha) |>
+	mutate(is_signif = padj <= ALPHA_CUTOFF) |>
 	summarise(
 		n_asv = n(),
 		.by = c(Phylum, is_signif, increase_abun)
@@ -35,7 +32,7 @@ p_sig_clade <- sig_taxa$df |>
 		size = 8
 	) +
 	facet_grid(
-		rows = vars(sprintf("%s\n(%d ASV's)", Phylum, group_total)),
+		rows = vars(sprintf("%s\n(%d ASVs)", Phylum, group_total)),
 		switch = "y"
 	) +
 	scale_x_continuous(expand = c(0,0,0.1,0), labels = scales::label_number(accuracy = 1)) +
@@ -51,7 +48,7 @@ p_sig_clade <- sig_taxa$df |>
 		legend.background = element_rect(colour = "black", fill = "white")
 	) +
 	labs(
-		x = "# ASV's",
+		x = "# ASVs",
 		y = NULL,
 		fill = latex2exp::TeX(r"($\sgn(\log_2 FC)$)")
 	); p_sig_clade

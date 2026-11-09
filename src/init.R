@@ -17,6 +17,8 @@ METADATA_FILE <- file.path(INPUT_DATA_DIR, "supplemental_tables.xlsx")
 MP_COORDINATES_FILE <- file.path(INPUT_DATA_DIR, "miniplot_coordinates.tsv")
 FUNGICIDAL_ACTIVITY_FILE <- file.path(INPUT_DATA_DIR, "fungicidal_activity.tsv")
 
+ALPHA_CUTOFF <- 0.05
+
 
 # functions -----------------------------------------------------------------------------------
 pooled.sd <- function(data, value_col, group_cols = c()) {
@@ -87,38 +89,6 @@ gg_pt2mm <- function(size.pt) {
 	# 1/72 inch to mm
 	size.mm <- size.pt / ggplot2::.pt
 	return(size.mm)
-}
-
-
-ggsave_nature <- function(
-	plot = last_plot(),
-	filename = "ggsave.pdf",
-	double_cols = FALSE,
-	width = NULL,
-	height = 220
-) {
-	# set dimensions based on nature guidelines
-	if(is.null(width))
-		width <- ifelse(double_cols, 180, 88)
-	#   caption |  50  150  300 words max
-	# ----------+--------------
-	# max 1-col | 220  180  130
-	# max 2-col | 225  210  185
-	height <- min(height, ifelse(double_cols, 225, 220))
-
-	ggsave(
-		plot = plot,
-		filename = filename,
-		path = file.path(RESULTS_DIR, "pdf"),
-		create.dir = TRUE,
-		device = ifelse(grepl("macos", osVersion, ignore.case = TRUE), "pdf", cairo_pdf),
-		width = width,
-		height = height,
-		units = "mm",
-		dpi = 300,  # minimum 300 DPI
-		scale = 1,
-		bg = "white"
-	)
 }
 
 
@@ -260,7 +230,7 @@ greenhouse_trial_df <- readxl::read_excel(
 	mutate(
 		sample_id = `Sample ID`,
 		crop = fct_inorder(Crop),
-		CYC = TYM == "yes",  # Cyclobutrifluram present?
+		CYC = TYM == "yes",  # cyclobutrifluram present?
 		labels = fct_inorder(Labels),
 		soil = fct_inorder(`Active Soil`),
 		arbuscules = Arbuscules,
@@ -288,13 +258,13 @@ miniplot_trial_df <- readxl::read_excel(
 ) |>
 	mutate(
 		sample_id = as.character(`Sample_ID`),
-		CYC = TYM == "yes",  # Cyclobutrifluram present?
+		CYC = TYM == "yes",  # cyclobutrifluram present?
 		AMF = AMF == "yes",  # AMF present?
 		color_code = fct_inorder(Color_code),
 		soil = fct_inorder(Soil),
 		arbuscules = Arbuscules,
 		mean_dsw = `mean_dsw (g)`,
-		treatment = sprintf("%sAMF\n%sCyc", if_else(AMF,"+","-"), if_else(CYC,"+","-")),
+		treatment = sprintf("%sAMF\n%scyc", if_else(AMF,"+","-"), if_else(CYC,"+","-")),
 		.keep = "none"
 	) |>
 	full_join(mp_locations_df, by = "sample_id")
@@ -313,8 +283,8 @@ mycorrhizal_response_df <- readxl::read_excel(
 		CYC = Cyclobutrifluram == "yes",
 		AMF = AMF == "yes",
 		amf_pretty = as.factor(if_else(AMF, "With AMF", "No AMF")),
-		cyc_pretty = as.factor(if_else(CYC, "With Cyc", "No Cyc")),
-		treatment = sprintf("%sAMF\n%sCyc", if_else(AMF,"+","-"), if_else(CYC,"+","-")),
+		cyc_pretty = as.factor(if_else(CYC, "With cyc", "No cyc")),
+		treatment = sprintf("%sAMF\n%scyc", if_else(AMF,"+","-"), if_else(CYC,"+","-")),
 		arbuscules,
 		FSW = `FSW (g)`,
 		FRW = `FRW (g)`,
@@ -332,7 +302,8 @@ spore_germination_df <- readxl::read_excel(
 	mutate(
 		treatments = fct_relevel(treatments, "Control"),
 		technology = str_split_i(treatments, "_", 1),
-		name = fct_relevel(name, "Control"),
+		name = fct_relevel(name, "control"),
+		name_format = sub(" mg/kg", "", name, fixed = TRUE),
 		rate = sprintf("%.2f", `rate (mg/kg)`),
 		percent_germinated,
 		.keep = "none"

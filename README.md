@@ -2,7 +2,7 @@
 
 This project contains the code used to generate the results and figures in the paper "Compatibility
 of Cyclobutrifluram with arbuscular mycorrhiza and soil microbiomes".
-For the paper, we used `R 4.6.0` to execute the scripts.
+For the paper, we used `R 4.6.2` to execute the scripts.
 
 
 ## How to run

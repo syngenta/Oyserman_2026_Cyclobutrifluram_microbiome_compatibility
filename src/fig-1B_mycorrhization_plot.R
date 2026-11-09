@@ -8,6 +8,13 @@ suppressPackageStartupMessages({
 source("./src/init.R", echo = FALSE, local = TRUE)
 
 
+# ANOVA stats ---------------------------------------------------------------------------------
+summary(aov(
+	arbuscules ~ soil * AMF * CYC,
+	data = miniplot_trial_df
+))
+
+
 # data processing MP --------------------------------------------------------------------------
 # Tukey HSD
 print(shapiro.test(miniplot_trial_df$arbuscules))
@@ -65,7 +72,7 @@ p_mp <- miniplot_trial_df |>
 		subtitle = "Mean AMF arbusculation per treatment",
 		fill = "Treatment",
 		x = NULL,
-		y = "Mycorrhization"
+		y = "Root length colonized"
 	); p_mp
 
 
